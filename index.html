@@ -6,6 +6,9 @@
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light only">
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <title>Peyam & Burak</title>
 <meta name="description" content="Peyam Başer ve Burak Şentürk nikah davetiyesi · 28 Kasım, Üsküdar Nikah Sarayı">
 <meta property="og:title" content="Peyam & Burak">
@@ -165,6 +168,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
   .kart { padding: 8px; }
   .hero { grid-template-columns: 1fr; }
   .tirmanis { max-width: 120px; }
+  .hero-yazi { order: -1; }
   .bilgi { grid-template-columns: 1fr; }
   .bilgi > div + div { border-left: 0; border-top: 1px solid var(--cizgi); }
   .lcv { grid-template-columns: 1fr; }
@@ -495,14 +499,17 @@ window.DAVET = {
   if (!kap || !window.requestAnimationFrame) return;
   try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
   var zemin = kap.querySelector(".k-zemin"), gelin = kap.querySelector(".k-gelin"), damat = kap.querySelector(".k-damat");
-  var hedef = { x: 0, y: 0 }, an = { x: 0, y: 0 }, taban = null;
+  var hedef = { x: 0, y: 0 }, an = { x: 0, y: 0 }, taban = null, tabanX = 0;
+  var HASSASIYET = 10;   /* kaç derecede tam etki: küçük = daha hassas */
   function sinirla(v) { return Math.max(-1, Math.min(1, v)); }
 
   window.addEventListener("deviceorientation", function (e) {
     if (e.gamma == null || e.beta == null) return;
-    if (taban === null) taban = e.beta;                 // telefonun ilk tutuluş açısı = nötr
-    hedef.x = sinirla(e.gamma / 25);
-    hedef.y = sinirla((e.beta - taban) / 25);
+    if (taban === null) { taban = e.beta; tabanX = e.gamma; }   // ilk tutuluş açısı = nötr
+    taban += (e.beta - taban) * 0.01;                   // tutuş açısı değişirse nötr yavaşça uyum sağlar
+    tabanX += (e.gamma - tabanX) * 0.01;
+    hedef.x = sinirla((e.gamma - tabanX) / HASSASIYET);
+    hedef.y = sinirla((e.beta - taban) / HASSASIYET);
   });
   window.addEventListener("pointermove", function (e) {
     if (e.pointerType !== "mouse") return;
@@ -520,12 +527,12 @@ window.DAVET = {
 
   var t0 = performance.now();
   function kare(t) {
-    an.x += (hedef.x - an.x) * 0.08;
-    an.y += (hedef.y - an.y) * 0.08;
+    an.x += (hedef.x - an.x) * 0.22;
+    an.y += (hedef.y - an.y) * 0.22;
     var nefes = Math.sin((t - t0) / 1500) * 0.6;        // sensör yokken de hafif salınım
     zemin.style.transform = "translate(" + (an.x * -2).toFixed(2) + "px," + (an.y * -2).toFixed(2) + "px)";
-    gelin.style.transform = "translate(" + (an.x * 4).toFixed(2) + "px," + (an.y * 3).toFixed(2) + "px) rotate(" + (an.x * 2 + nefes).toFixed(2) + "deg)";
-    damat.style.transform = "translate(" + (an.x * 6).toFixed(2) + "px," + (an.y * 4).toFixed(2) + "px) rotate(" + (an.x * 3 - nefes).toFixed(2) + "deg)";
+    gelin.style.transform = "translate(" + (an.x * 5).toFixed(2) + "px," + (an.y * 4).toFixed(2) + "px) rotate(" + (an.x * 2.5 + nefes).toFixed(2) + "deg)";
+    damat.style.transform = "translate(" + (an.x * 8).toFixed(2) + "px," + (an.y * 5).toFixed(2) + "px) rotate(" + (an.x * 3.5 - nefes).toFixed(2) + "deg)";
     requestAnimationFrame(kare);
   }
   requestAnimationFrame(kare);
