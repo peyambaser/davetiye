@@ -64,7 +64,11 @@ h1, h2, h3, p { margin: 0; }
 /* Hero: iki sütun */
 .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 56px); align-items: start; }
 .hero-cizim { display: flex; justify-content: center; }
-.hero-cizim img { width: 100%; max-width: 190px; }
+.tirmanis { position: relative; width: 100%; max-width: 190px; }
+.tirmanis img { width: 100%; }
+.k-gelin, .k-damat { position: absolute; inset: 0; will-change: transform; }
+.k-gelin { transform-origin: 47% 7%; }      /* gelinin tuttuğu karabina */
+.k-damat { transform-origin: 58.5% 59.3%; } /* damadın ipi tuttuğu el */
 .hero-yazi { display: flex; flex-direction: column; gap: 22px; text-align: center; align-items: center; min-width: 0; }
 .aileler { display: flex; justify-content: center; gap: 18px; font-family: var(--etiket); font-size: 13px; letter-spacing: .06em; color: var(--soluk); }
 .aileler span + span { border-left: 1px solid var(--cizgi); padding-left: 18px; }
@@ -160,7 +164,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
   body { padding-top: 16px; padding-bottom: 24px; font-size: 18px; }
   .kart { padding: 8px; }
   .hero { grid-template-columns: 1fr; }
-  .hero-cizim img { max-width: 120px; }
+  .tirmanis { max-width: 120px; }
   .bilgi { grid-template-columns: 1fr; }
   .bilgi > div + div { border-left: 0; border-top: 1px solid var(--cizgi); }
   .lcv { grid-template-columns: 1fr; }
@@ -181,13 +185,18 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 <main class="kart"><div class="kart-ic">
     <div class="ust"><span>Nikah Davetiyesi</span><span>28 · 11 · 2026</span></div>
     <header class="hero">
-      <div class="hero-cizim"><img src="assets/tirmanis.png" alt="Gelinlikli ve damatlıklı iki tırmanıcı aynı ipe bağlı, kayayı birlikte tırmanıyor" width="376" height="1220"></div>
+      <div class="hero-cizim">
+        <div class="tirmanis" role="img" aria-label="Gelinlikli ve damatlıklı iki tırmanıcı aynı ipe bağlı, kayayı birlikte tırmanıyor">
+          <img class="k-zemin" src="assets/tirmanis-zemin.png" alt="" width="376" height="1220">
+          <img class="k-gelin" src="assets/tirmanis-gelin.png" alt="" width="376" height="1220">
+          <img class="k-damat" src="assets/tirmanis-damat.png" alt="" width="376" height="1220">
+        </div>
+      </div>
       <div class="hero-yazi">
         <div class="aileler"><span>İbrahim &amp; Aysel Başer</span><span>Salih &amp; Nilüfer Şentürk</span></div>
         <h1 class="isimler"><span>Peyam</span><span class="ve">&amp;</span><span>Burak</span></h1>
-        <span class="etiket">Aynı ipe bağlıyız</span>
         <p class="selam" data-selam hidden></p>
-        <p class="metin">Hayatımızın en güzel rotasına birlikte başlıyoruz. Bu mutlu günümüzde nikah törenimizde sizi de aramızda görmekten onur duyarız.</p>
+        <p class="metin">Hayatımızın yeni rotasına birlikte başlıyoruz. <br />Bu mutlu günümüzde nikah törenimizde sizi de aramızda görmekten mutluluk duyarız.</p>
       </div>
     </header>
     <svg class="ip" viewBox="0 0 340 28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M6 15c28-6 58 4 88 0s48-4 60-1"/><path d="M186 14c12 3 30 5 60 1s58-6 88 0"/><path d="M154 14c3-8 17-9 18-1s-14 10-17 2M163 13c4-8 20-8 23 1"/><circle cx="6" cy="15" r="1.6" fill="currentColor"/><circle cx="334" cy="15" r="1.6" fill="currentColor"/></svg>
@@ -477,6 +486,49 @@ window.DAVET = {
         });
     });
   }
+})();
+</script>
+<script>
+/* Tırmanış çizimi: gelin ve damat telefonun eğimine (masaüstünde fareye) göre ayrı ayrı sallanır */
+(function () {
+  var kap = document.querySelector(".tirmanis");
+  if (!kap || !window.requestAnimationFrame) return;
+  try { if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+  var zemin = kap.querySelector(".k-zemin"), gelin = kap.querySelector(".k-gelin"), damat = kap.querySelector(".k-damat");
+  var hedef = { x: 0, y: 0 }, an = { x: 0, y: 0 }, taban = null;
+  function sinirla(v) { return Math.max(-1, Math.min(1, v)); }
+
+  window.addEventListener("deviceorientation", function (e) {
+    if (e.gamma == null || e.beta == null) return;
+    if (taban === null) taban = e.beta;                 // telefonun ilk tutuluş açısı = nötr
+    hedef.x = sinirla(e.gamma / 25);
+    hedef.y = sinirla((e.beta - taban) / 25);
+  });
+  window.addEventListener("pointermove", function (e) {
+    if (e.pointerType !== "mouse") return;
+    hedef.x = sinirla(e.clientX / innerWidth * 2 - 1);
+    hedef.y = sinirla(e.clientY / innerHeight * 2 - 1);
+  });
+  /* iPhone: hareket sensörü izni ilk dokunuşta istenir */
+  if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function") {
+    var iste = function () {
+      document.removeEventListener("touchend", iste);
+      DeviceOrientationEvent.requestPermission().then(function () { taban = null; }).catch(function () {});
+    };
+    document.addEventListener("touchend", iste);
+  }
+
+  var t0 = performance.now();
+  function kare(t) {
+    an.x += (hedef.x - an.x) * 0.08;
+    an.y += (hedef.y - an.y) * 0.08;
+    var nefes = Math.sin((t - t0) / 1500) * 0.6;        // sensör yokken de hafif salınım
+    zemin.style.transform = "translate(" + (an.x * -2).toFixed(2) + "px," + (an.y * -2).toFixed(2) + "px)";
+    gelin.style.transform = "translate(" + (an.x * 4).toFixed(2) + "px," + (an.y * 3).toFixed(2) + "px) rotate(" + (an.x * 2 + nefes).toFixed(2) + "deg)";
+    damat.style.transform = "translate(" + (an.x * 6).toFixed(2) + "px," + (an.y * 4).toFixed(2) + "px) rotate(" + (an.x * 3 - nefes).toFixed(2) + "deg)";
+    requestAnimationFrame(kare);
+  }
+  requestAnimationFrame(kare);
 })();
 </script>
 </body>
