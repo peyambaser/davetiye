@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Peyam & Burak</title>
 <meta name="description" content="Peyam Başer ve Burak Şentürk nikah davetiyesi · 28 Kasım, Üsküdar Nikah Sarayı">
@@ -24,7 +26,7 @@
   --vurgu-yazi: #f4efe6;
   --baslik: "Cormorant Garamond", Garamond, "Times New Roman", serif;
   --etiket: "Jost", "Avenir Next", "Segoe UI", Arial, sans-serif;
-  color-scheme: light;
+  color-scheme: only light;
 }
 body.kina { --vurgu: #8a2a22; --murekkep: #4a1714; --soluk: #7d4a40; --cizgi: #d4b8ad; }
 
@@ -60,9 +62,9 @@ h1, h2, h3, p { margin: 0; }
 .etiket { font-family: var(--etiket); font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--soluk); }
 
 /* Hero: iki sütun */
-.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 56px); align-items: center; }
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 56px); align-items: start; }
 .hero-cizim { display: flex; justify-content: center; }
-.hero-cizim img { width: 100%; max-width: 300px; }
+.hero-cizim img { width: 100%; max-width: 190px; }
 .hero-yazi { display: flex; flex-direction: column; gap: 22px; text-align: center; align-items: center; min-width: 0; }
 .aileler { display: flex; justify-content: center; gap: 18px; font-family: var(--etiket); font-size: 13px; letter-spacing: .06em; color: var(--soluk); }
 .aileler span + span { border-left: 1px solid var(--cizgi); padding-left: 18px; }
@@ -146,7 +148,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 .besn dl > div { display: flex; flex-direction: column; gap: 8px; padding: 26px 18px; text-align: center; border-bottom: 1px solid var(--cizgi); min-width: 0; }
 .besn dl > div:not(:nth-child(3n+1)) { border-left: 1px solid var(--cizgi); }
 .besn .yildiz { font-size: .5em; vertical-align: super; color: var(--soluk); margin-left: 2px; }
-.dipnot { align-self: flex-start; font-style: italic; font-size: 16px; color: var(--soluk); }
+.dipnot { align-self: flex-start; font-style: italic; font-size: 16px; color: var(--soluk); text-underline-offset: 3px; }
+.dipnot:hover, .dipnot:focus-visible { color: var(--murekkep); }
 .besn dt { font-style: italic; font-size: 22px; color: var(--soluk); }
 .besn dd { margin: 0; font-size: 27px; line-height: 1.2; text-wrap: balance; }
 
@@ -198,7 +201,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
         <div><dt>Nasıl?</dt><dd>Efendi gibi</dd></div>
         <div><dt>Neden?</dt><dd>Neden olmasın?</dd></div>
       </dl>
-      <a class="dipnot" href="https://tr.wikipedia.org/wiki/5n_1k_(gazetecilik_terimi)" target="_blank">* Merak edenler için</a>
+      <a class="dipnot" href="https://tr.wikipedia.org/wiki/5n_1k_(gazetecilik_terimi)" target="_blank" rel="noopener">* Merak edenler için</a>
     </section>
     <section class="detay" data-detay aria-label="Tören bilgileri"></section>
     

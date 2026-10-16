@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Peyam'ın Kınası</title>
 <meta name="description" content="Peyam'ın kına gecesine davetlisiniz">
@@ -24,7 +26,7 @@
   --vurgu-yazi: #f4efe6;
   --baslik: "Cormorant Garamond", Garamond, "Times New Roman", serif;
   --etiket: "Jost", "Avenir Next", "Segoe UI", Arial, sans-serif;
-  color-scheme: light;
+  color-scheme: only light;
 }
 body.kina { --vurgu: #8a2a22; --murekkep: #4a1714; --soluk: #7d4a40; --cizgi: #d4b8ad; }
 
@@ -166,7 +168,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 </head>
 <body data-etkinlik="kina" class="kina">
 <main class="kart"><div class="kart-ic">
-    <div class="ust" style="justify-content:center"><span>Kına Gecesi</span></div>
     <header class="kina-ust">
       <p class="selam" data-selam hidden></p>
       <h1 class="kina-baslik"><span class="isim">Peyam'ın</span><span>Kına Gecesine davetlisiniz.</span></h1>
@@ -232,9 +233,9 @@ window.DAVET = {
     baslik: "Kına Gecesi",
     tarih: "",        // örn. "2026-11-26T19:00:00+03:00"
     sureDakika: 240,
-    yer: "",
-    adres: "",
-    harita: "",
+    yer: "La Vella Davet Salonu",
+    adres: "Ümraniye, İstanbul",
+    harita: "https://www.google.com/maps/place/La+Vella+Davet+Salonu+%C3%9Cmraniye/@41.0189392,29.0903655,17z/data=!3m1!4b1!4m6!3m5!1s0x14cac95cc7249607:0xc334374cd4631d52!8m2!3d41.0189392!4d29.0929458!16s%2Fg%2F11j7w5cdst!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D",
     not: ""
   }
 };

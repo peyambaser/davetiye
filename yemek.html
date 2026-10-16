@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <meta name="claude:viewport-fit-sides" content="cover">
 <title>Peyam & Burak Yemek</title>
 <meta name="description" content="Nikah sonrası yemeğe davetlisiniz">
@@ -24,7 +26,7 @@
   --vurgu-yazi: #f4efe6;
   --baslik: "Cormorant Garamond", Garamond, "Times New Roman", serif;
   --etiket: "Jost", "Avenir Next", "Segoe UI", Arial, sans-serif;
-  color-scheme: light;
+  color-scheme: only light;
 }
 body.kina { --vurgu: #8a2a22; --murekkep: #4a1714; --soluk: #7d4a40; --cizgi: #d4b8ad; }
 
@@ -140,6 +142,15 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 .kina-alt { margin: 0 calc(-1 * clamp(20px, 5vw, 64px)) calc(-1 * clamp(28px, 5vw, 64px)); }
 .kina-alt img { width: 100%; max-width: 560px; margin: 0 auto; mix-blend-mode: multiply; }
 
+/* Sofra çerçevesi: yazılar masanın boş alanında, çerçeveyle birlikte ölçeklenir */
+.sofra { position: relative; width: 100%; max-width: 560px; margin: 0 auto; container-type: inline-size; }
+.sofra-cizim { width: 100%; }
+.sofra-ic { position: absolute; left: 31%; width: 36%; top: 22%; height: 65%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3.4cqw; text-align: center; }
+.sofra-ic h1 { font-weight: 300; font-style: italic; line-height: 1.05; font-size: clamp(30px, 8.4vw, 46px); font-size: 8.4cqw; }
+.sofra-ic .selam { font-size: clamp(14px, 4.1vw, 23px); font-size: 4.1cqw; line-height: 1.25; }
+.sofra-ic .metin { font-size: clamp(13px, 3.8vw, 21px); font-size: 3.8cqw; line-height: 1.45; }
+
 [hidden] { display: none !important; }
 
 /* Telefon */
@@ -152,6 +163,11 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
   .bilgi > div + div { border-left: 0; border-top: 1px solid var(--cizgi); }
   .lcv { grid-template-columns: 1fr; }
   .ust { justify-content: center; }
+  /* yemek: telefonda kart çerçevesiz, sofra çizimi ekran genişliğinde */
+  body { padding-left: 0; padding-right: 0; overflow-x: clip; background-color: var(--kagit); }
+  .kart { padding: 0; box-shadow: none; background: transparent; }
+  .kart-ic { border: 0; outline: 0; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+  .sofra { width: auto; max-width: none; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -159,15 +175,14 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: non
 <body data-etkinlik="yemek">
 <main class="kart"><div class="kart-ic">
     <div class="ust"><span>Yemek Daveti</span><span>Peyam &amp; Burak</span></div>
-    <header class="hero">
-      <div class="hero-cizim"><img src="assets/tirmanis.png" alt="Gelinlikli ve damatlıklı iki tırmanıcı aynı ipe bağlı" width="376" height="1220"></div>
-      <div class="hero-yazi">
-        <span class="etiket">Zirvede bir mola</span>
-        <h1 class="isimler" style="font-size:clamp(48px,7vw,76px)"><span>Nikahın Ardından</span></h1>
+    <section class="sofra" aria-labelledby="sofra-baslik">
+      <img class="sofra-cizim" src="assets/sofra.png" alt="Gelin ve damadın başında oturduğu, misafirlerin kadeh kaldırdığı uzun bir sofra çizimi" width="736" height="1098">
+      <div class="sofra-ic">
+        <h1 id="sofra-baslik">Nikahın Ardından</h1>
         <p class="selam" data-selam hidden></p>
         <p class="metin">Yeni hayatımıza attığımız bu imzayı güzel bir sofrayla kutlayalım istedik. Bu sofrada bize eşlik ederseniz mutlu oluruz.</p>
       </div>
-    </header>
+    </section>
     <svg class="ip" viewBox="0 0 340 28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M6 15c28-6 58 4 88 0s48-4 60-1"/><path d="M186 14c12 3 30 5 60 1s58-6 88 0"/><path d="M154 14c3-8 17-9 18-1s-14 10-17 2M163 13c4-8 20-8 23 1"/><circle cx="6" cy="15" r="1.6" fill="currentColor"/><circle cx="334" cy="15" r="1.6" fill="currentColor"/></svg>
     <section class="detay" data-detay aria-label="Yemek bilgileri"></section>
     <svg class="ip" viewBox="0 0 340 28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M6 15c28-6 58 4 88 0s48-4 60-1"/><path d="M186 14c12 3 30 5 60 1s58-6 88 0"/><path d="M154 14c3-8 17-9 18-1s-14 10-17 2M163 13c4-8 20-8 23 1"/><circle cx="6" cy="15" r="1.6" fill="currentColor"/><circle cx="334" cy="15" r="1.6" fill="currentColor"/></svg>
@@ -219,7 +234,7 @@ window.DAVET = {
   yanitAdresi: "https://script.google.com/macros/s/AKfycbwAvMFuUTmKeU7eIgLy78XX68ICaLxXGuv4YE3J6D5Vf0_rEE0WnYMyzN_OHXB_Pt6P/exec",
   etkinlik: {
     baslik: "Nikah Sonrası Yemek",
-    tarih: "",        // örn. "2026-11-28T17:30:00+03:00"
+    tarih: "2026-11-28T19:00:00+03:00",   // İstanbul saati
     sureDakika: 180,
     yer: "Fasuli Garden",
     adres: "Çekmeköy, İstanbul",
